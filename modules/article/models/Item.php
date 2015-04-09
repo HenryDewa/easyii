@@ -1,4 +1,5 @@
 <?php
+
 namespace yii\easyii\modules\article\models;
 
 use Yii;
@@ -7,18 +8,16 @@ use yii\easyii\behaviors\SeoBehavior;
 use yii\easyii\behaviors\SortableModel;
 use yii\helpers\StringHelper;
 
-class Item extends \yii\easyii\components\ActiveRecord
-{
+class Item extends \yii\easyii\components\ActiveRecord {
+
     const STATUS_OFF = 0;
     const STATUS_ON = 1;
 
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'easyii_article_items';
     }
 
-    public function rules()
-    {
+    public function rules() {
         return [
             [['text', 'title'], 'required'],
             [['title', 'short', 'text'], 'trim'],
@@ -30,8 +29,7 @@ class Item extends \yii\easyii\components\ActiveRecord
         ];
     }
 
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'title' => Yii::t('easyii', 'Title'),
             'text' => Yii::t('easyii', 'Text'),
@@ -41,8 +39,7 @@ class Item extends \yii\easyii\components\ActiveRecord
         ];
     }
 
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             SortableModel::className(),
             'seo' => SeoBehavior::className(),
@@ -54,21 +51,19 @@ class Item extends \yii\easyii\components\ActiveRecord
         ];
     }
 
-    public function getCategory()
-    {
+    public function getCategory() {
         return $this->hasOne(Category::className(), ['category_id' => 'category_id']);
     }
 
-    public function beforeSave($insert)
-    {
+    public function beforeSave($insert) {
         if (parent::beforeSave($insert)) {
             $settings = Yii::$app->getModule('admin')->activeModules['article']->settings;
-            if($this->short && $settings['enableShort']){
+            if ($this->short && $settings['enableShort']) {
                 $this->short = StringHelper::truncate($this->short, $settings['shortMaxLength']);
             }
 
-            if(!$this->isNewRecord && $this->thumb != $this->oldAttributes['thumb']){
-                @unlink(Yii::getAlias('@webroot').$this->oldAttributes['thumb']);
+            if (!$this->isNewRecord && $this->thumb != $this->oldAttributes['thumb']) {
+                @unlink(Yii::getAlias('@webroot') . $this->oldAttributes['thumb']);
             }
 
             return true;
@@ -77,12 +72,12 @@ class Item extends \yii\easyii\components\ActiveRecord
         }
     }
 
-    public function afterDelete()
-    {
+    public function afterDelete() {
         parent::afterDelete();
 
-        if($this->thumb){
-            @unlink(Yii::getAlias('@webroot').$this->thumb);
+        if ($this->thumb) {
+            @unlink(Yii::getAlias('@webroot') . $this->thumb);
         }
     }
+
 }
