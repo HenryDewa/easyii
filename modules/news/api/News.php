@@ -127,6 +127,8 @@ class News extends \yii\easyii\components\API
             'time' => $is_string ? '' : $data['time'],
             'date' => $is_string ? '' : Yii::$app->formatter->asDatetime($data['time'], 'medium'),
             'empty' => $is_string ? true : false,
+            'created_by' => $is_string ? '' : $data['created_by'],
+            'updated_by' => $is_string ? '' : $data['updated_by'],
             'createdBy' => $is_string ? '' : Admin::findOne($data['created_by']),
             'updatedBy' => $is_string ? '' : Admin::findOne($data['updated_by']),
         ];
