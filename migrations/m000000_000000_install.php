@@ -122,6 +122,10 @@ class m000000_000000_install extends \yii\db\Migration
             'thumb' => Schema::TYPE_STRING . '(128) DEFAULT NULL',
             'slug' => Schema::TYPE_STRING . '(128) DEFAULT NULL',
             'order_num' => Schema::TYPE_INTEGER . ' NOT NULL',
+            'created_at' => Schema::TYPE_DATETIME. " DEFAULT NULL",
+            'updated_at' => Schema::TYPE_DATETIME. " DEFAULT NULL",
+            'created_by' => Schema::TYPE_INTEGER. " DEFAULT NULL",
+            'updated_by' => Schema::TYPE_INTEGER. " DEFAULT NULL",
         ], 'ENGINE=MyISAM DEFAULT CHARSET=utf8');
         $this->createIndex('slug', catalog\models\Item::tableName(), 'slug', true);
 
