@@ -5,6 +5,7 @@ use Yii;
 use yii\data\ActiveDataProvider;
 use yii\helpers\Url;
 use yii\widgets\LinkPager;
+use yii\easyii\models\Admin;
 
 use yii\easyii\modules\news\models\News as NewsModel;
 
@@ -125,7 +126,9 @@ class News extends \yii\easyii\components\API
             'views' => $is_string ? '' : $data['views'],
             'time' => $is_string ? '' : $data['time'],
             'date' => $is_string ? '' : Yii::$app->formatter->asDatetime($data['time'], 'medium'),
-            'empty' => $is_string ? true : false
+            'empty' => $is_string ? true : false,
+            'createdBy' => $is_string ? '' : Admin::findOne($data['created_by']),
+            'updatedBy' => $is_string ? '' : Admin::findOne($data['updated_by']),
         ];
     }
 

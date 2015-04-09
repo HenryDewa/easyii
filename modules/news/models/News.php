@@ -5,11 +5,11 @@ namespace yii\easyii\modules\news\models;
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\easyii\behaviors\SeoBehavior;
+use yii\easyii\components\ActiveRecord;
+use yii\behaviors\BlameableBehavior;
 use yii\helpers\StringHelper;
-use yii\db\Expression;
-use yii\behaviors\TimestampBehavior;
 
-class News extends \yii\easyii\components\ActiveRecord {
+class News extends ActiveRecord {
 
     const STATUS_OFF = 0;
     const STATUS_ON = 1;
@@ -28,6 +28,7 @@ class News extends \yii\easyii\components\ActiveRecord {
             ['views', 'number', 'integerOnly' => true],
             ['slug', 'match', 'pattern' => self::$SLUG_PATTERN, 'message' => Yii::t('easyii', 'Slug can contain only 0-9, a-z and "-" characters (max: 128).')],
             ['slug', 'default', 'value' => null],
+            [['created_by', 'updated_by'], 'integer'],
         ];
     }
 
@@ -38,6 +39,8 @@ class News extends \yii\easyii\components\ActiveRecord {
             'short' => Yii::t('easyii/news', 'Short'),
             'thumb' => Yii::t('easyii', 'Image'),
             'slug' => Yii::t('easyii', 'Slug'),
+            'created_by' => Yii::t('easyii', 'Created By'),
+            'updated_by' => Yii::t('easyii', 'Updated By'),
         ];
     }
 
@@ -49,13 +52,10 @@ class News extends \yii\easyii\components\ActiveRecord {
                 'attribute' => 'title',
                 'ensureUnique' => true
             ],
-            'timestamp' => [
-                'class' => TimestampBehavior::className(),
-                'attributes' => [
-                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
-                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
-                ],
-                'value' => new Expression('NOW()'),
+            'blameable' => [
+                'class' => BlameableBehavior::className(),
+                'createdByAttribute' => 'created_by',
+                'updatedByAttribute' => 'updated_by',
             ],
         ];
     }
