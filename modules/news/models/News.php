@@ -1,23 +1,24 @@
 <?php
+
 namespace yii\easyii\modules\news\models;
 
 use Yii;
 use yii\behaviors\SluggableBehavior;
 use yii\easyii\behaviors\SeoBehavior;
 use yii\helpers\StringHelper;
+use yii\db\Expression;
+use yii\behaviors\TimestampBehavior;
 
-class News extends \yii\easyii\components\ActiveRecord
-{
+class News extends \yii\easyii\components\ActiveRecord {
+
     const STATUS_OFF = 0;
     const STATUS_ON = 1;
 
-    public static function tableName()
-    {
+    public static function tableName() {
         return 'easyii_news';
     }
 
-    public function rules()
-    {
+    public function rules() {
         return [
             [['text', 'title'], 'required'],
             [['title', 'short', 'text'], 'trim'],
@@ -30,8 +31,7 @@ class News extends \yii\easyii\components\ActiveRecord
         ];
     }
 
-    public function attributeLabels()
-    {
+    public function attributeLabels() {
         return [
             'title' => Yii::t('easyii', 'Title'),
             'text' => Yii::t('easyii', 'Text'),
@@ -41,23 +41,29 @@ class News extends \yii\easyii\components\ActiveRecord
         ];
     }
 
-    public function behaviors()
-    {
+    public function behaviors() {
         return [
             'seo' => SeoBehavior::className(),
             'sluggable' => [
                 'class' => SluggableBehavior::className(),
                 'attribute' => 'title',
                 'ensureUnique' => true
-            ]
+            ],
+            'timestamp' => [
+                'class' => TimestampBehavior::className(),
+                'attributes' => [
+                    ActiveRecord::EVENT_BEFORE_INSERT => ['created_at', 'updated_at'],
+                    ActiveRecord::EVENT_BEFORE_UPDATE => ['updated_at'],
+                ],
+                'value' => new Expression('NOW()'),
+            ],
         ];
     }
 
-    public function beforeSave($insert)
-    {
+    public function beforeSave($insert) {
         if (parent::beforeSave($insert)) {
             $settings = Yii::$app->getModule('admin')->activeModules['news']->settings;
-            if($this->short && $settings['enableShort']){
+            if ($this->short && $settings['enableShort']) {
                 $this->short = StringHelper::truncate($this->short, $settings['shortMaxLength']);
             }
 
@@ -67,12 +73,12 @@ class News extends \yii\easyii\components\ActiveRecord
         }
     }
 
-    public function afterDelete()
-    {
+    public function afterDelete() {
         parent::afterDelete();
 
-        if($this->thumb){
-            @unlink(Yii::getAlias('@webroot').$this->thumb);
+        if ($this->thumb) {
+            @unlink(Yii::getAlias('@webroot') . $this->thumb);
         }
     }
+
 }

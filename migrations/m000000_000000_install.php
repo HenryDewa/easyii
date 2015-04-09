@@ -186,7 +186,9 @@ class m000000_000000_install extends \yii\db\Migration
             'slug' => Schema::TYPE_STRING . '(128) DEFAULT NULL',
             'time' => Schema::TYPE_INTEGER .  " DEFAULT '0'",
             'views' => Schema::TYPE_INTEGER . " DEFAULT '0'",
-            'status' => Schema::TYPE_BOOLEAN . " DEFAULT '0'"
+            'status' => Schema::TYPE_BOOLEAN . " DEFAULT '0'",
+            'created_at' => Schema::TYPE_DATETIME. " DEFAULT NULL",
+            'updated_at' => Schema::TYPE_DATETIME. " DEFAULT NULL",
         ], 'ENGINE=MyISAM DEFAULT CHARSET=utf8');
         $this->createIndex('slug', News::tableName(), 'slug', true);
 
