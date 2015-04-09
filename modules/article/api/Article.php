@@ -10,6 +10,7 @@ use yii\easyii\widgets\Colorbox;
 use yii\easyii\models\Photo;
 use yii\easyii\modules\article\models\Category;
 use yii\easyii\modules\article\models\Item;
+use yii\easyii\models\Admin;
 
 class Article extends \yii\easyii\components\API
 {
@@ -213,8 +214,7 @@ class Article extends \yii\easyii\components\API
         }
 
         elseif(preg_match(Category::$SLUG_PATTERN, $id_slug)){
-
-            return $this->createCatObject('<a href="' . Url::to(['/admin/article/a/create', 'slug' => $id_slug] . '" target="_blank">'.Yii::t('easyii/article/api', 'Create category').'</a>');
+            return $this->createCatObject('<a href="' . Url::to(['/admin/article/a/create', 'slug' => $id_slug] . '" target="_blank">'.Yii::t('easyii/article/api', 'Create category')).'</a>');
         }
         else{
             return $this->createCatObject($this->errorText('WRONG CATEGORY IDENTIFIER'));
