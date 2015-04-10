@@ -10,6 +10,7 @@ use yii\easyii\widgets\Fancybox;
 use yii\easyii\models\Photo;
 use yii\easyii\modules\catalog\models\Category;
 use yii\easyii\modules\catalog\models\Item;
+use yii\easyii\models\Admin;
 
 class Catalog extends \yii\easyii\components\API
 {
