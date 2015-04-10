@@ -215,8 +215,8 @@ class Catalog extends \yii\easyii\components\API
             'updated_at' => $data['updated_at'],
             'created_by' => $data['created_by'],
             'updated_by' => $data['updated_by'],
-            'createdBy' => $is_string ? '' : Admin::findOne($data['created_by']),
-            'updatedBy' => $is_string ? '' : Admin::findOne($data['updated_by']),
+            'createdBy' => Admin::findOne($data['created_by']),
+            'updatedBy' => Admin::findOne($data['updated_by']),
         ];
 
         foreach($data['data'] as $key => $value){
