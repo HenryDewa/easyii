@@ -10,6 +10,7 @@ use yii\easyii\models\Photo;
 use yii\easyii\components\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
+use yii\db\Expression;
 
 class Item extends \yii\easyii\components\ActiveRecord {
 
