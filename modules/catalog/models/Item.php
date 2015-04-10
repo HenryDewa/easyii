@@ -11,6 +11,7 @@ use yii\easyii\components\ActiveRecord;
 use yii\behaviors\BlameableBehavior;
 use yii\behaviors\TimestampBehavior;
 use yii\db\Expression;
+use yii\easyii\models\Admin;
 
 class Item extends \yii\easyii\components\ActiveRecord {
 
@@ -93,6 +94,10 @@ class Item extends \yii\easyii\components\ActiveRecord {
 
     public function getCategory() {
         return $this->hasOne(Category::className(), ['category_id' => 'category_id']);
+    }
+
+    public function getCreatedBy() {
+        return $this->hasOne(Admin::className(), ['admin_id' => 'created_by']);
     }
 
     public function afterDelete() {
